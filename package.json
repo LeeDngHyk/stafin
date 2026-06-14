@@ -1,0 +1,14 @@
+{
+  "name": "stafin-mk2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "StaFin Mark II — 단일 서비스 배포 (Express가 API + Expo 웹 빌드를 함께 서빙)",
+  "scripts": {
+    "install:all": "npm --prefix app install && npm --prefix server install",
+    "build": "npm --prefix app install && npm --prefix app run export:web && npm --prefix server install && npm --prefix server run db:generate",
+    "start": "npm --prefix server run start"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

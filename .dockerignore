@@ -1,0 +1,7 @@
+**/node_modules
+**/dist
+**/.expo
+**/.git
+server/prisma/dev.db
+server/prisma/*.db-journal
+_inputs

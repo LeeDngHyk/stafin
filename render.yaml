@@ -1,0 +1,17 @@
+# Render.com 블루프린트 — 단일 웹 서비스로 API + 웹을 함께 배포
+# 사용법: GitHub에 푸시 → Render 대시보드 New + → Blueprint → 이 저장소 선택
+services:
+  - type: web
+    name: stafin-mk2
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      # SQLite는 무료 플랜에서 휘발성(재배포/슬립 시 초기화)이며, 부팅 시 자동 재시드됩니다.
+      # 영구 저장이 필요하면 Postgres로 전환하세요(DEPLOY.md 참고).

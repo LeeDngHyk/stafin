@@ -1,0 +1,175 @@
+// StaFin Mark II - 데이터 모델
+// 등급 체계: 1=공격투자형 ... 5=안정형 (시뮬레이터/기획서 기준, 낮을수록 공격적)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+/// 손님
+model User {
+  id              String   @id @default(cuid())
+  name            String
+  provider        String   @default("kakao") // SNS 간편 로그인(미구현, 데모 자동로그인)
+
+  // 투자 성향
+  cInvestRating   Int?     // C_InvestRating: 초기 투자 성향 등급(1~5). null이면 신규 손님
+  currentRating   Int?     // 동적으로 재조정된 현재 등급
+  surveyVector    Float?   // T0 설문 벡터(1~5)
+  dynamicVector   Float?   // 실시간 동적 추정 벡터
+  dissonance      Float    @default(0) // 오토인코더 재구성 오차(인지부조화 지수)
+
+  // 행동 로그 집계 (AI 엔진 입력)
+  behaviorBias    Float    @default(3) // 시사/뉴스 소비 성향(1=공격 ~ 5=안정)
+  dwellLevel      Float    @default(3) // 콘텐츠 체류시간/관여도(1~5)
+
+  // 관심 시사
+  cCurrentAffairs String   @default("[]") // C_CurrentAffairs: 관심 섹터 slug 리스트(JSON)
+
+  // 일일 퀘스트
+  dailyDone       Int      @default(0)  // 오늘 본 필수 시사 수 (N/5)
+  streakDays      Int      @default(0)  // N일 연속 완료
+  lastQuestDate   String?  // 'YYYY-MM-DD' (오전 7시 기준 일자)
+
+  // 거래 정보
+  mainBank        String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  answers         SurveyAnswer[]
+  interests       InterestWeight[]
+  behaviors       BehaviorLog[]
+  portfolios      UserPortfolio[]
+}
+
+/// 11개 투자성향 진단 문항(하나은행 스타일 적합성 진단)
+model SurveyQuestion {
+  id        Int      @id
+  order     Int      // 1~11
+  title     String
+  helper    String   // StaFin 애니메이션/설명용 보조 텍스트
+  animation String   // StaFin 행동 애니메이션 키
+  options   String   // JSON: [{label, stability(1~5)}]  stability 낮을수록 공격적 선택
+}
+
+model SurveyAnswer {
+  id          String   @id @default(cuid())
+  userId      String
+  questionId  Int
+  optionIndex Int
+  stability   Float
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+}
+
+/// 섹터(시사 카테고리 = 투자 섹터). 7개. MK1 참고 구성.
+model Sector {
+  id          Int      @id
+  slug        String   @unique
+  name        String
+  emoji       String
+  description String
+  hotScore    Float    @default(0) // 많은 사람들이 관심(핫 트랜드 정렬)
+  returnRate  Float    @default(0) // 섹터 평균 수익률(테마관 정렬)
+  riskBias    Float    @default(3) // 1=공격 ~ 5=안정 (행동 벡터 매핑)
+
+  articles    NewsArticle[]
+  products    Product[]
+  interests   InterestWeight[]
+}
+
+/// 손님별 섹터 관심 가중치 (스와이프 불호 시 하락)
+model InterestWeight {
+  id       String @id @default(cuid())
+  userId   String
+  sectorId Int
+  weight   Float  @default(1.0)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sector   Sector @relation(fields: [sectorId], references: [id])
+
+  @@unique([userId, sectorId])
+}
+
+/// 시사(뉴스)
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  source      String   // 출처
+  staFinNote  String   // StaFin 퍼옴(한 줄 코멘트)
+  summary     String   // 1줄 요약
+  content     String   // 전문
+  sectorId    Int
+  isHot       Boolean  @default(false) // 핫 트랜드(많은 사람 관심)
+  riskBias    Float    @default(3)     // 이 기사 성향(1=공격 ~ 5=안정)
+  publishedAt String   // 'YYYY-MM-DD' (전일 시사 요약용)
+  sector      Sector   @relation(fields: [sectorId], references: [id])
+  behaviors   BehaviorLog[]
+}
+
+/// 금융팁(금융 상품/제도 설명 카드)
+model FinTip {
+  id      String @id @default(cuid())
+  name    String // 금융 상품/제도 이름
+  summary String // 1줄 요약
+  detail  String // 상세 설명
+}
+
+/// 금융 상품(테마 상품관)
+model Product {
+  id          String @id @default(cuid())
+  name        String
+  type        String // 예적금/CMA/ELS/DLS/주식/펀드/ETF/ELW/암호화폐 등
+  sectorId    Int
+  riskLevel   Int    // 상품 위험도 1(매우높음)~5(매우낮음) = 적정 등급
+  minRating   Int    // 이 상품을 권유 가능한 최소 공격성 등급(적정성 원칙)
+  returnRate  Float  // 수익률(%)
+  popularity  Int    // 인기순
+  description String
+  sector      Sector @relation(fields: [sectorId], references: [id])
+}
+
+/// 유명 포트폴리오
+model Portfolio {
+  id             String @id @default(cuid())
+  name           String
+  tagline        String // 특징 한 줄
+  description    String
+  stability      Float  // 안정 수치(0~100)
+  expectedReturn Float  // 연 기대수익률(%)
+  riskGrade      Int    // 권장 성향 등급
+  composition    String // JSON: [{asset, percent, sectorSlug}]
+  backtest       String // JSON: [{year, value}]
+  userPortfolios UserPortfolio[]
+}
+
+/// 나만의 포트폴리오
+model UserPortfolio {
+  id          String   @id @default(cuid())
+  userId      String
+  basePortfId String
+  period      Int      // 투자 기간(개월)
+  amount      Int      // 투자 금액(원)
+  bank        String
+  composition String   // JSON: 시사 선호 반영 조정된 구성
+  newsAdjusted Boolean @default(false)
+  createdAt   DateTime @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  base        Portfolio @relation(fields: [basePortfId], references: [id])
+}
+
+/// 행동 로그(스와이프/체류/상세보기)
+model BehaviorLog {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String?
+  action    String   // like_down / dislike_left / dislike_right / detail_view / dwell
+  dwellMs   Int      @default(0)
+  createdAt DateTime @default(now())
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   NewsArticle? @relation(fields: [articleId], references: [id])
+}
