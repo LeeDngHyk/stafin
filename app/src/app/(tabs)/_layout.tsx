@@ -1,11 +1,11 @@
 import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
-import { colors } from "@/lib/theme";
+import { colors, fontFamily } from "@/lib/theme";
 
 function Icon({ emoji, focused }: { emoji: string; focused: boolean }) {
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <Text style={{ fontSize: 22, opacity: focused ? 1 : 0.45 }}>{emoji}</Text>
+      <Text style={{ fontSize: 22, opacity: focused ? 1 : 0.4 }}>{emoji}</Text>
     </View>
   );
 }
@@ -24,7 +24,7 @@ export default function TabsLayout() {
           paddingTop: 6,
           paddingBottom: 8,
         },
-        tabBarLabelStyle: { fontSize: 11, fontWeight: "700" },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: fontFamily.semibold },
       }}
     >
       <Tabs.Screen

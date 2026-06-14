@@ -4,7 +4,7 @@ import Svg, { Polyline, Line, Circle, Defs, LinearGradient, Stop, Polygon } from
 import { colors, font, space, radius } from "@/lib/theme";
 import type { CompItem } from "@/lib/types";
 
-const PALETTE = ["#3B5BFF", "#00C2A8", "#FFC53D", "#FF7A45", "#A26BFA", "#36C5A6", "#FF4D8F"];
+const PALETTE = ["#1F45EC", "#00C2A8", "#FDC33B", "#FF6A3D", "#8899FF", "#2FB89A", "#E0214B"];
 
 // 구성 비율: 가로 누적 막대 + 범례
 export function CompoBars({ items }: { items: CompItem[] }) {

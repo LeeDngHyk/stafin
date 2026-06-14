@@ -7,7 +7,7 @@ import { Screen, Btn, Card, Tag, Loading } from "@/components/ui";
 import { api } from "@/lib/api";
 import { useStore } from "@/lib/store";
 import type { Article, FinTip, Feed, Quest } from "@/lib/types";
-import { colors, font, space, radius, shadow, gradeColor } from "@/lib/theme";
+import { colors, font, space, radius, shadow, gradeColor, fontFamily } from "@/lib/theme";
 import React from "react";
 
 type Item =
@@ -161,7 +161,10 @@ function NewsCardBody({ article, onDetail }: { article: Article; onDetail: () =>
 
       <View style={styles.staFinNote}>
         <StaFin size={34} animate={false} />
-        <Text style={styles.noteText}>{article.staFinNote}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.noteLabel}>StaFin 톡</Text>
+          <Text style={styles.noteText}>{article.staFinNote}</Text>
+        </View>
       </View>
 
       <Text style={[font.body, { marginTop: space(4), color: colors.sub }]}>{article.summary}</Text>
@@ -181,8 +184,9 @@ const styles = StyleSheet.create({
   catEmoji: { fontSize: 14 },
   catText: { fontSize: 12, fontWeight: "700", color: colors.sub },
   source: { ...font.tiny, marginTop: space(2) },
-  staFinNote: { flexDirection: "row", alignItems: "center", gap: space(2), backgroundColor: colors.primarySoft, padding: space(3), borderRadius: radius.md, marginTop: space(4) },
-  noteText: { flex: 1, color: colors.primaryDark, fontSize: 13, fontWeight: "600", lineHeight: 18 },
+  staFinNote: { flexDirection: "row", alignItems: "center", gap: space(2.5), backgroundColor: colors.primarySoft, padding: space(3.5), borderRadius: radius.md, marginTop: space(4) },
+  noteLabel: { color: colors.primary, fontSize: 11, fontFamily: fontFamily.bold, marginBottom: 2 },
+  noteText: { color: colors.onPrimaryContainer, fontSize: 13, fontFamily: fontFamily.semibold, lineHeight: 18 },
   actions: { flexDirection: "row", gap: space(3), paddingTop: space(4) },
   actBtn: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: space(3), borderRadius: radius.lg, gap: 2, ...shadow.card },
   actDislike: { backgroundColor: colors.card, borderWidth: 1.5, borderColor: "#FFD5D6" },
