@@ -151,9 +151,9 @@ function NewsCardBody({ article, onDetail }: { article: Article; onDetail: () =>
         </View>
         {article.required ? (
           article.isHot
-            ? <Tag label="🔥 핫 트랜드" color="#fff" bg={colors.danger} />
-            : <Tag label="⭐ 관심 시사" color="#fff" bg={colors.primary} />
-        ) : <Tag label="실시간" color={colors.sub} />}
+            ? <Tag label="🔥 핫 트랜드" bg="#000000" />
+            : <Tag label="⭐ 관심 시사" outline color={colors.ink} />
+        ) : <Tag label="실시간" outline color={colors.faint} />}
       </View>
 
       <Text style={[font.h2, { marginTop: space(4) }]}>{article.title}</Text>
@@ -189,11 +189,11 @@ const styles = StyleSheet.create({
   noteText: { color: colors.onPrimaryContainer, fontSize: 13, fontFamily: fontFamily.semibold, lineHeight: 18 },
   actions: { flexDirection: "row", gap: space(3), paddingTop: space(4) },
   actBtn: { flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: space(3), borderRadius: radius.lg, gap: 2, ...shadow.card },
-  actDislike: { backgroundColor: colors.card, borderWidth: 1.5, borderColor: "#FFD5D6" },
-  actDetail: { backgroundColor: colors.card, borderWidth: 1.5, borderColor: colors.primarySoft, flex: 0.8 },
-  actLike: { backgroundColor: colors.success },
+  actDislike: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line },
+  actDetail: { backgroundColor: colors.card, borderWidth: 1, borderColor: colors.line, flex: 0.8 },
+  actLike: { backgroundColor: "#000000" },
   actEmoji: { fontSize: 18 },
-  actLabel: { fontSize: 12, fontWeight: "800", color: colors.danger },
+  actLabel: { fontSize: 12, fontFamily: fontFamily.bold, fontWeight: "700", color: colors.ink },
   doneWrap: { alignItems: "center", justifyContent: "center", flex: 1, paddingHorizontal: space(4) },
   hint: { ...font.tiny, textAlign: "center", paddingVertical: space(3) },
 });

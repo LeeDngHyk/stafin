@@ -1,50 +1,55 @@
-// StaFin Mark II 디자인 토큰
-// Google Stitch 'StaFin Brand' 디자인 시스템의 해석된 토큰(namedColors/spacing/roundness)을
-// 거의 그대로 반영하고, 글씨체만 Pretendard로 사용.
+// StaFin Mark II 디자인 토큰 — "Monochrome Precision"
+// 흑백 미니멀/브루탈리즘: 색 제거, 샤프한 모서리(0px), 그림자 대신 1px 테두리.
+// 글씨체는 한글 가독성을 위해 Pretendard 유지(디자인 문서의 Inter 대체), 타이포 스케일/웨이트는 문서대로.
 export const colors = {
-  // 브랜드 (Stitch primary 계열)
-  primary: "#1F45EC", // Stitch primary
-  primaryDeep: "#0035E0", // primary_dim (pressed)
-  primaryDark: "#0035E0",
-  primarySoft: "#E7ECFF", // 옅은 primary 틴트(칩/뱃지 배경)
-  onPrimaryContainer: "#00156E",
-  mint: "#00C2A8", // 포인트
-  star: "#FDC33B", // tertiary_container (별 골드)
-  starDeep: "#765600", // tertiary
+  // 브랜드 = 무채색
+  primary: "#000000", // Deep Black (주요 액션/구조)
+  primaryDeep: "#000000",
+  primaryDark: "#1B1B1B", // primary-container
+  primarySoft: "#EFEDED", // surface-container (옅은 회색 그룹 배경)
+  onPrimaryContainer: "#1B1C1C",
+  mint: "#1B1C1C",
+  star: "#2A2A2C", // StaFin 별(차콜)
+  starDeep: "#0E0E0F",
 
-  // 의미색 (등급/성향) — 1등급(공격) 레드 → 5등급(안정) 그린
-  danger: "#E0214B", // error 계열
-  warning: "#FF9F0A",
-  success: "#13C27B",
-  caution: "#FFB020",
+  // 의미색 — 진단 중 감정 편향 제거를 위해 무채색. 오류만 레드 유지.
+  danger: "#BA1A1A", // error
+  warning: "#7E7576",
+  success: "#1B1C1C", // 긍정도 검정(객관성)
+  caution: "#7E7576",
 
-  // 중립 (Stitch surface 토큰)
-  bg: "#F5F6FB", // background
-  card: "#FFFFFF", // surface_container_lowest
-  cardLow: "#EFF1F6", // surface_container_low
-  ink: "#2C2F33", // on_surface
-  sub: "#595C60", // on_surface_variant
-  faint: "#8B8E95", // outline 계열
-  line: "#DADDE4", // surface_variant
-  chip: "#EFF1F6",
+  // 중립 (Monochrome surface 토큰)
+  bg: "#FBF9F9", // background / surface
+  card: "#FFFFFF", // surface-container-lowest
+  cardLow: "#F5F3F3", // surface-container-low
+  ink: "#1B1C1C", // on-surface
+  sub: "#4C4546", // on-surface-variant
+  faint: "#7E7576", // outline (보조 라벨/힌트)
+  line: "#CFC4C5", // outline-variant (1px 테두리/구분선)
+  lineStrong: "#000000", // 강조 테두리(현재 항목/리포트)
+  chip: "#F5F3F3",
 };
 
-// 등급(1=공격 ~ 5=안정)별 색상
+// 등급(1=공격 ~ 5=안정) — 그레이스케일 스펙트럼 (공격=짙음, 안정=옅음)
 export const gradeColor = (g: number | null | undefined): string => {
   switch (g) {
-    case 1: return "#E0214B";
-    case 2: return "#FF6A3D";
-    case 3: return "#FFB020";
-    case 4: return "#2FB89A";
-    case 5: return "#13C27B";
+    case 1: return "#1B1C1C";
+    case 2: return "#454040";
+    case 3: return "#6E6768";
+    case 4: return "#9A9293";
+    case 5: return "#C2B9BA";
     default: return colors.faint;
   }
 };
 
 export const space = (n: number) => n * 4;
 
-// Stitch roundness ROUND_EIGHT 기준 (또렷한 라운드)
-export const radius = { sm: 8, md: 10, lg: 12, xl: 16, pill: 999 };
+// 샤프(0px). 칩 등 최소 구분이 필요한 경우 최대 2px.
+export const radius = { sm: 0, md: 0, lg: 0, xl: 0, pill: 2, chip: 2 };
+
+// 1px 테두리(그림자 대체)
+export const border = { width: 1, color: colors.line };
+export const borderStrong = { width: 1, color: "#000000" };
 
 // Pretendard 폰트 패밀리 (expo-font로 로드)
 export const fontFamily = {
@@ -53,37 +58,25 @@ export const fontFamily = {
   semibold: "Pretendard-SemiBold",
   bold: "Pretendard-Bold",
   extrabold: "Pretendard-ExtraBold",
-  // 의미 별칭
-  display: "Pretendard-ExtraBold",
+  display: "Pretendard-Bold",
   displayBold: "Pretendard-Bold",
-  body: "Pretendard-Medium",
+  body: "Pretendard-Regular",
   bodySemi: "Pretendard-SemiBold",
   bodyBold: "Pretendard-Bold",
 };
 
+// 그림자 대신 1px 테두리 (기존 ...shadow.card 사용처가 모두 테두리로 전환됨)
 export const shadow = {
-  card: {
-    shadowColor: "#1B2559",
-    shadowOpacity: 0.07,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 5 },
-    elevation: 3,
-  },
-  float: {
-    shadowColor: "#1B2559",
-    shadowOpacity: 0.16,
-    shadowRadius: 24,
-    shadowOffset: { width: 0, height: 10 },
-    elevation: 8,
-  },
+  card: { borderWidth: 1, borderColor: colors.line },
+  float: { borderWidth: 2, borderColor: "#000000" }, // 모달: 두꺼운 검정 테두리(브루탈리즘)
 };
 
-// 타이포 스케일 (Pretendard, Stitch typography 비율)
+// 타이포 스케일 (Pretendard, 문서 typography 비율 — 헤비 웨이트 + 음수 자간)
 export const font = {
-  h1: { fontFamily: fontFamily.extrabold, fontSize: 28, fontWeight: "800" as const, color: colors.ink, letterSpacing: -0.6, lineHeight: 36 },
-  h2: { fontFamily: fontFamily.extrabold, fontSize: 22, fontWeight: "800" as const, color: colors.ink, letterSpacing: -0.4, lineHeight: 30 },
-  h3: { fontFamily: fontFamily.bold, fontSize: 17, fontWeight: "700" as const, color: colors.ink, letterSpacing: -0.2 },
-  body: { fontFamily: fontFamily.medium, fontSize: 15.5, fontWeight: "500" as const, color: colors.ink, lineHeight: 23 },
-  sub: { fontFamily: fontFamily.medium, fontSize: 13, fontWeight: "500" as const, color: colors.sub, lineHeight: 19 },
-  tiny: { fontFamily: fontFamily.semibold, fontSize: 11.5, fontWeight: "600" as const, color: colors.faint },
+  h1: { fontFamily: fontFamily.bold, fontSize: 27, fontWeight: "700" as const, color: colors.ink, letterSpacing: -0.6, lineHeight: 34 },
+  h2: { fontFamily: fontFamily.bold, fontSize: 21, fontWeight: "700" as const, color: colors.ink, letterSpacing: -0.4, lineHeight: 28 },
+  h3: { fontFamily: fontFamily.semibold, fontSize: 17, fontWeight: "600" as const, color: colors.ink, letterSpacing: -0.2 },
+  body: { fontFamily: fontFamily.regular, fontSize: 16, fontWeight: "400" as const, color: colors.ink, lineHeight: 24 },
+  sub: { fontFamily: fontFamily.medium, fontSize: 13.5, fontWeight: "500" as const, color: colors.sub, lineHeight: 20 },
+  tiny: { fontFamily: fontFamily.semibold, fontSize: 11.5, fontWeight: "600" as const, color: colors.faint, letterSpacing: 0.4 },
 };

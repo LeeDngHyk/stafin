@@ -205,7 +205,7 @@ function BehaviorBar({ label, value, left, right }: { label: string; value: numb
 
 const styles = StyleSheet.create({
   topbar: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: space(2), marginBottom: space(3) },
-  avatar: { width: 46, height: 46, borderRadius: 23, backgroundColor: colors.primarySoft, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: colors.line },
+  avatar: { width: 46, height: 46, borderRadius: 0, backgroundColor: colors.primarySoft, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "#000000" },
   gaugeTop: { flexDirection: "row", justifyContent: "space-between", width: "100%", marginBottom: space(2) },
   gradeRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: space(4), marginTop: space(2) },
   dissoRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", marginTop: space(5), paddingTop: space(4), borderTopWidth: 1, borderTopColor: colors.line },
@@ -227,6 +227,6 @@ const styles = StyleSheet.create({
   popup: { backgroundColor: colors.card, borderRadius: radius.xl, padding: space(6), alignItems: "center", gap: space(3), width: "100%", maxWidth: 360, ...shadow.float },
   popupTitle: { ...font.h2, textAlign: "center" },
   popupMsg: { ...font.body, color: colors.sub, textAlign: "center", lineHeight: 22 },
-  barTrack: { height: 10, backgroundColor: colors.line, borderRadius: 999, justifyContent: "center" },
-  barDot: { position: "absolute", width: 20, height: 20, borderRadius: 10, backgroundColor: colors.primary, borderWidth: 3, borderColor: "#fff", marginLeft: -10, ...shadow.card },
+  barTrack: { height: 4, backgroundColor: colors.line, borderRadius: 0, justifyContent: "center" },
+  barDot: { position: "absolute", width: 14, height: 14, borderRadius: 0, backgroundColor: "#000000", borderWidth: 2, borderColor: "#FFFFFF", marginLeft: -7 },
 });

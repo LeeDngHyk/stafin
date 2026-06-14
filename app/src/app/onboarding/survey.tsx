@@ -148,8 +148,8 @@ function Split4({ stability }: { stability?: number }) {
 
 const styles = StyleSheet.create({
   progressWrap: { flexDirection: "row", alignItems: "center", gap: space(3), marginTop: space(2), marginBottom: space(3) },
-  track: { flex: 1, height: 8, backgroundColor: colors.line, borderRadius: radius.pill, overflow: "hidden" },
-  fill: { height: "100%", backgroundColor: colors.primary, borderRadius: radius.pill },
+  track: { flex: 1, height: 4, backgroundColor: colors.line, borderRadius: 0, overflow: "hidden" },
+  fill: { height: "100%", backgroundColor: "#000000", borderRadius: 0 },
   count: { ...font.tiny, color: colors.sub },
   stafinWrap: { alignItems: "center", gap: space(2), marginVertical: space(2) },
   helperBubble: { backgroundColor: colors.primarySoft, paddingVertical: space(2), paddingHorizontal: space(4), borderRadius: radius.pill },
@@ -158,12 +158,12 @@ const styles = StyleSheet.create({
   opt: {
     flexDirection: "row", alignItems: "center", gap: space(3),
     backgroundColor: colors.card, borderRadius: radius.lg, padding: space(4),
-    borderWidth: 1.5, borderColor: colors.line,
+    borderWidth: 1, borderColor: colors.line,
   },
-  optActive: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
-  radio: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: colors.line, alignItems: "center", justifyContent: "center" },
-  radioActive: { borderColor: colors.primary },
-  radioDot: { width: 11, height: 11, borderRadius: 6, backgroundColor: colors.primary },
+  optActive: { borderColor: "#000000", borderWidth: 2, backgroundColor: colors.card },
+  radio: { width: 20, height: 20, borderRadius: 0, borderWidth: 1.5, borderColor: colors.line, alignItems: "center", justifyContent: "center" },
+  radioActive: { borderColor: "#000000", backgroundColor: "#000000" },
+  radioDot: { width: 8, height: 8, borderRadius: 0, backgroundColor: "#FFFFFF" },
   optText: { ...font.body, flex: 1 },
   nav: { flexDirection: "row", gap: space(3), paddingVertical: space(4) },
   split4Label: { ...font.sub, textAlign: "center", marginTop: space(3), fontWeight: "600" },

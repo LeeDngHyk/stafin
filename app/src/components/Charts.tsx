@@ -4,7 +4,8 @@ import Svg, { Polyline, Line, Circle, Defs, LinearGradient, Stop, Polygon } from
 import { colors, font, space, radius } from "@/lib/theme";
 import type { CompItem } from "@/lib/types";
 
-const PALETTE = ["#1F45EC", "#00C2A8", "#FDC33B", "#FF6A3D", "#8899FF", "#2FB89A", "#E0214B"];
+// 모노크롬: 짙은 회색 → 옅은 회색 스펙트럼
+const PALETTE = ["#1B1C1C", "#454040", "#6E6768", "#928B8C", "#B3ABAC", "#2E2A2B", "#827B7C"];
 
 // 구성 비율: 가로 누적 막대 + 범례
 export function CompoBars({ items }: { items: CompItem[] }) {
