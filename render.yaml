@@ -13,5 +13,6 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "20"
-      # SQLite는 무료 플랜에서 휘발성(재배포/슬립 시 초기화)이며, 부팅 시 자동 재시드됩니다.
-      # 영구 저장이 필요하면 Postgres로 전환하세요(DEPLOY.md 참고).
+      # 영구 보존 Postgres 연결 주소 (Neon 등). 대시보드에서 직접 입력(시크릿).
+      - key: DATABASE_URL
+        sync: false

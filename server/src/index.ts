@@ -51,15 +51,20 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(500).json({ error: err?.message ?? "internal error" });
 });
 
-// 부팅 시 스키마/시드 자동 초기화 (배포 환경에서 빈 DB 자가 복구)
+// 부팅 시 스키마 동기화 + 시드 (Postgres 영속 DB: 최초 1회 테이블 생성·시드, 이후엔 no-op)
 async function ensureDb() {
   try {
-    await prisma.sector.count();
-  } catch {
-    console.log("⚙️  스키마 없음 → prisma db push 실행");
-    execSync("npx prisma db push --skip-generate --accept-data-loss", { cwd: SERVER_ROOT, stdio: "inherit" });
+    // 매 부팅 스키마 동기화 (이미 일치하면 즉시 통과). 데이터 손실이 필요한 변경은
+    // 비대화형에서 실패하므로 안전하게 보존됨.
+    execSync("npx prisma db push --skip-generate", { cwd: SERVER_ROOT, stdio: "inherit" });
+  } catch (e: any) {
+    console.error("⚠️ prisma db push 경고(계속 진행):", e?.message ?? e);
   }
-  await seedIfEmpty();
+  try {
+    await seedIfEmpty(); // 정적 데이터(섹터·시사·상품 등)가 비어 있을 때만 주입
+  } catch (e) {
+    console.error("⚠️ seed 경고:", e);
+  }
 }
 
 const PORT = Number(process.env.PORT ?? 4000);

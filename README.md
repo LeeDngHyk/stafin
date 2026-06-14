@@ -10,7 +10,7 @@
 
 ```
 stafin-mk2/
-├─ server/   Express + TypeScript + Prisma + SQLite  (REST API + AI 동적 성향 엔진)
+├─ server/   Express + TypeScript + Prisma + Postgres (REST API + AI 동적 성향 엔진)
 └─ app/      Expo (React Native) + TypeScript         (모바일 앱)
 ```
 
@@ -21,6 +21,8 @@ stafin-mk2/
 ```bash
 cd server
 npm install
+# Postgres 연결 주소 설정 (.env.example 참고) — 예: Neon 무료 DB
+#   server/.env 에  DATABASE_URL="postgresql://...?sslmode=require"
 npm run db:reset      # 스키마 생성 + 시드 데이터 주입
 npm run dev           # http://localhost:4000
 ```
