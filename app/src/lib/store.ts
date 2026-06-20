@@ -32,9 +32,9 @@ export const useStore = create<AppState>((set, get) => ({
       return user;
     } catch (meErr) {
       console.warn("[bootstrap] /auth/me:", String(meErr));
-      // 저장된 손님 없음 → 데모 자동 로그인(기존/신규 자동 판단)
+      // 저장된 손님 없음(새 기기/브라우저) → 이 기기 전용 손님을 새로 생성
       try {
-        const r = await api.post<{ user: User; isNew: boolean }>("/auth/login", {});
+        const r = await api.post<{ user: User; isNew: boolean }>("/auth/login", { fresh: true });
         await setUserId(r.user.id);
         set({ user: r.user, loading: false });
         return r.user;
